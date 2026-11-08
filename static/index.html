@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="git-atlas-session" content="__SESSION_TOKEN__">
+  <meta name="description" content="Git Atlas · 在代码的年轮里，重逢每一个创造的瞬间。本地 Git 开发历史可视化。">
+  <title>Git Atlas · 代码有迹可循</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+<svg class="sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+  <symbol id="i-branch" viewBox="0 0 24 24"><path d="M6 6v12M6 12c0-6 12 0 12-8"/><circle cx="6" cy="4" r="2"/><circle cx="6" cy="20" r="2"/><circle cx="18" cy="3" r="2"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-wave" viewBox="0 0 24 24"><path d="M2 12h4l3-8 5 16 3-8h5"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h5l2 3h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/><path d="M3 8h18"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M4 16v4h16v-4"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M6.1 6.1A8 8 0 0 1 19.5 9M4.5 15A8 8 0 0 0 18 18"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v.1"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7Z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+  <symbol id="i-commit" viewBox="0 0 24 24"><path d="M2 12h5m10 0h5"/><circle cx="12" cy="12" r="5"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3m1-16a3 3 0 0 1 0 6m3 10v-3a6 6 0 0 0-3-5"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 11h18m-12 5h.1m4 0h.1"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5m8-10 5 5-5 5m-3-14-2 18"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V3H3v13h5"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 2 2.8 7.2L22 12l-7.2 2.8L12 22l-2.8-7.2L2 12l7.2-2.8Z"/></symbol>
+</defs></svg>
+
+<aside class="sidebar">
+  <a class="brand" href="#overview" aria-label="Git Atlas 首页"><img src="/favicon.svg" width="35" height="35" alt=""><span>git<span class="brand-light">atlas</span><small>THE SHAPE OF YOUR CODE</small></span></a>
+  <button class="repo-card" id="repo-card" title="打开或切换本地仓库"><span class="repo-icon"><svg><use href="#i-folder"/></svg></span><span class="repo-name"><strong id="side-repo-name">打开一段开发历程</strong><small id="side-repo-status">LOCAL REPOSITORY</small></span><svg class="tiny"><use href="#i-down"/></svg></button>
+  <div class="nav-label">工作空间 <span>WORKSPACE</span></div>
+  <nav aria-label="主导航">
+    <button class="nav-item active" data-view="overview" aria-label="历史总览" title="历史总览"><svg><use href="#i-grid"/></svg><span>历史总览</span><span class="nav-key">01</span></button>
+    <button class="nav-item" data-view="history" aria-label="提交长卷" title="提交长卷"><svg><use href="#i-clock"/></svg><span>提交长卷</span><span class="nav-key">02</span></button>
+    <button class="nav-item" data-view="rhythm" aria-label="开发节律" title="开发节律"><svg><use href="#i-wave"/></svg><span>开发节律</span><span class="nav-key">03</span></button>
+  </nav>
+  <div class="sidebar-rule"></div>
+  <div class="nav-label">历史范围 <svg><use href="#i-branch"/></svg></div>
+  <label class="field-caption" for="branch-select">选择一个分支</label>
+  <div class="select-wrap branch-wrap"><svg><use href="#i-branch"/></svg><select id="branch-select" aria-label="选择查看的分支"><option>main</option></select></div>
+  <label class="mainline-option" title="只沿第一父提交回溯；合并时统计相对第一父提交的变化"><input type="checkbox" id="mainline"><span>只看第一父链</span><svg><use href="#i-info"/></svg></label>
+  <p class="branch-explainer" id="branch-explainer">包含此分支可达的全部提交，<br>无需切换工作区中的分支。</p>
+  <div class="sidebar-bottom">
+    <div class="side-note"><svg><use href="#i-spark"/></svg><p>有些成长，<br>要回头看才发现。</p><div class="note-art" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+    <div class="local-status"><span class="status-dot"></span><span id="cache-status">本地运行 · 仓库只读</span><button id="theme-toggle" class="icon-button" title="切换明暗主题" aria-label="切换明暗主题"><svg><use href="#i-sun"/></svg></button></div>
+    <button class="method-button" id="method-button"><svg><use href="#i-info"/></svg> 统计口径与使用说明 <span>↗</span></button>
+  </div>
+</aside>
+
+<main class="main">
+  <header class="topbar">
+    <div class="breadcrumb"><span>工作空间</span><span class="slash">/</span><strong id="top-repo-name">orbit-workspace</strong><span class="demo-badge" id="demo-badge">演示数据</span></div>
+    <div class="topbar-actions"><button class="search-trigger" id="search-trigger"><svg><use href="#i-search"/></svg><span>寻找一条提交…</span><kbd>Ctrl K</kbd></button><span class="top-divider"></span><button class="icon-button" id="refresh-button" title="重新读取分支与历史" aria-label="刷新仓库"><svg><use href="#i-refresh"/></svg></button><span class="local-badge"><span class="status-dot"></span>LOCAL</span></div>
+  </header>
+  <div class="content">
+    <section class="page-heading">
+      <div><div class="eyebrow"><span></span> A LITTLE HISTORY. A LOT OF BUILDING.</div><h1 id="page-title">每一行，都有来处<span class="heading-dot">.</span></h1><p id="page-subtitle">在代码的年轮里，重逢每一个创造的瞬间。</p></div>
+      <div class="heading-actions"><div class="export-wrap"><button class="button secondary" id="export-button"><svg><use href="#i-download"/></svg>导出回忆<svg class="tiny"><use href="#i-down"/></svg></button><div id="export-menu" class="dropdown hidden"><button id="export-html">保存可视化报告 <small>离线 HTML · 当前筛选</small></button><button id="export-csv">导出提交数据 <small>CSV · 当前筛选</small></button></div></div><button class="button primary" id="open-button"><svg><use href="#i-folder"/></svg>打开本地仓库</button></div>
+    </section>
+
+    <div class="filterbar">
+      <div class="filter-left"><span class="scope-chip"><svg><use href="#i-branch"/></svg><b id="scope-name">main</b></span><select id="mobile-branch-select" aria-label="选择查看的分支"></select><span class="date-description" id="date-description">读取历史中…</span></div>
+      <div class="filter-right"><div class="range-segments" role="group" aria-label="日期范围"><button data-range="all" class="active">全部历程</button><button data-range="30">近 30 天</button><button data-range="90">近 90 天</button><button data-range="custom" id="custom-range-button">自定义</button></div><button class="filter-reset hidden" id="filter-reset">清除筛选 ×</button></div>
+      <div class="date-popover hidden" id="date-popover"><label>开始日期<input type="date" id="date-from"></label><span>—</span><label>结束日期<input type="date" id="date-to"></label><button class="button primary small" id="apply-dates">应用</button></div>
+    </div>
+    <div id="active-filters" class="active-filters hidden" aria-label="当前筛选条件"></div>
+
+    <section class="stat-grid" id="stat-grid" aria-label="历史统计"></section>
+
+    <div id="overview-view" class="view">
+      <div class="overview-grid">
+        <section class="panel growth-panel">
+          <div class="panel-heading"><div><div class="section-eyebrow">LINES OVER TIME</div><h2>代码生长的形状 <span class="help" title="所选历史中的文本新增减去删除。不等于仓库当前代码总行数；二进制文件不计入。">?</span></h2></div><div class="chart-select"><button data-grain="auto" class="active">自动</button><button data-grain="week">周</button><button data-grain="month">月</button></div></div>
+          <div class="chart-summary"><span class="chart-large" id="chart-net">—</span><span class="chart-unit">行累计净变更</span><span class="chart-legend"><i class="mint"></i>净变更曲线<i class="green"></i>新增<i class="orange"></i>删除</span></div>
+          <div class="growth-chart-wrap"><canvas id="growth-chart" aria-label="代码净变更和新增删除趋势图" role="img"></canvas><div class="chart-tooltip hidden" id="growth-tooltip"></div><div class="chart-empty hidden" id="growth-empty">这个范围里，还没有留下提交的足迹。</div></div>
+          <div class="chart-footer"><span><svg><use href="#i-search"/></svg>拖动图表聚焦一段时间 · 双击还原</span><span id="chart-granularity">按日聚合</span></div>
+          <div class="replay-bar"><button class="play-button" id="replay-play" aria-label="播放开发历程"><svg><use href="#i-play"/></svg></button><div class="replay-label"><strong id="replay-title">重播这段历程</strong><small id="replay-date">从第一行，到此刻。</small></div><input type="range" id="replay-slider" min="0" max="1000" value="1000" aria-label="开发历程播放进度"><button id="replay-speed" class="speed-button" title="切换播放速度">1×</button><span class="replay-end" id="replay-end">TODAY</span></div>
+        </section>
+        <aside class="panel milestones-panel"><div class="panel-heading"><div><div class="section-eyebrow">MOMENTS THAT MATTER</div><h2>旅程中的刻度</h2></div><svg class="muted-icon"><use href="#i-spark"/></svg></div><div id="milestones" class="milestones"></div><div class="journey-caption" id="journey-caption">每一个微小的提交，都算数。</div></aside>
+      </div>
+
+      <section class="panel calendar-panel" id="calendar-section"><div class="panel-heading"><div class="calendar-heading"><div class="section-eyebrow">DAYS YOU SHOWED UP</div><h2>那些写下代码的日子 <span id="calendar-caption"></span></h2></div><div class="calendar-controls"><div class="calendar-metrics"><b id="calendar-days">—</b> 活跃天 <span>·</span><b id="calendar-streak">—</b> 天最长连续</div><select id="calendar-year" aria-label="活动日历年份"></select></div></div><div class="calendar-scroll"><div class="calendar" id="calendar"></div></div><div class="calendar-footer"><span>每一格，是一次认真投入的日子。<span class="calendar-hint"> 点击日期查看当天提交</span></span><div class="heat-legend">少 <i></i><i></i><i></i><i></i><i></i> 多</div></div></section>
+
+      <div class="lower-grid">
+        <section class="panel language-panel"><div class="panel-heading"><div><div class="section-eyebrow">THE MATERIALS</div><h2>用什么，构建这一切</h2></div><span class="panel-unit">按文本增删量</span></div><div id="languages"></div></section>
+        <section class="panel author-panel"><div class="panel-heading"><div><div class="section-eyebrow">PEOPLE BEHIND THE CODE</div><h2>一起走过的人</h2></div><span class="panel-unit" id="authors-count"></span></div><div id="authors"></div></section>
+      </div>
+      <section class="panel recent-panel"><div class="panel-heading"><div><div class="section-eyebrow">THE LATEST FOOTPRINTS</div><h2>最近留下的足迹</h2></div><button class="text-button" id="view-all-commits">展开提交长卷 <svg><use href="#i-arrow"/></svg></button></div><div id="recent-commits"></div></section>
+    </div>
+
+    <div id="history-view" class="view hidden">
+      <section class="panel history-panel"><div class="history-toolbar"><div class="history-search"><svg><use href="#i-search"/></svg><input id="history-search" placeholder="搜索提交说明、作者、邮箱或 hash…" aria-label="搜索提交"></div><select id="author-filter" aria-label="筛选作者"><option value="">全部作者</option></select><select id="sort-order" aria-label="提交排序"><option value="desc">从最近开始</option><option value="asc">从第一行开始</option></select></div><div class="history-info"><span id="history-total">全部提交</span><span>点击提交，回到那个瞬间 <svg><use href="#i-arrow"/></svg></span></div><div class="commit-table-head"><span>提交 / COMMIT</span><span>作者</span><span>时间</span><span>文本变更</span><span></span></div><div id="commit-list" class="commit-list"></div><div class="pagination"><span id="page-description"></span><div><button class="button secondary small" id="previous-page">← 上一页</button><span id="page-number"></span><button class="button secondary small" id="next-page">下一页 →</button></div></div></section>
+    </div>
+
+    <div id="rhythm-view" class="view hidden">
+      <div class="rhythm-grid"><section class="panel hours-panel"><div class="panel-heading"><div><div class="section-eyebrow">WHEN IDEAS BECOME CODE</div><h2>你的创造时区</h2></div><span class="panel-unit">作者时间 · 原始时区</span></div><p class="panel-description">清晨的灵光，午后的专注，或是深夜不舍得关掉的编辑器。</p><div class="hours-scroll"><div id="hours-grid" class="hours-grid"></div></div><div class="hours-summary" id="hours-summary"></div></section><section class="panel weekdays-panel"><div class="panel-heading"><div><div class="section-eyebrow">A WEEK IN COMMITS</div><h2>一周的节拍</h2></div></div><div id="weekday-bars"></div></section></div>
+      <section class="panel monthly-panel"><div class="panel-heading"><div><div class="section-eyebrow">CHAPTER BY CHAPTER</div><h2>每个月，都是新的一章</h2></div><span class="panel-unit">提交数量 · 点击柱形聚焦月份</span></div><div class="monthly-scroll"><div id="monthly-bars" class="monthly-bars"></div></div></section><div class="rhythm-facts" id="rhythm-facts"></div>
+    </div>
+    <footer class="footer"><span><img src="/favicon.svg" alt="" width="18" height="18">git atlas <i>·</i> 留下代码，也留下时间。</span><button id="footer-method">作者日期 · 文本行变更 · 查看统计口径 ↗</button></footer>
+  </div>
+  <div class="loading-overlay hidden" id="loading-overlay" role="status" aria-live="polite"><div class="loading-card"><div class="loading-mark"><svg><use href="#i-branch"/></svg></div><div class="eyebrow">READING YOUR STORY</div><h2 id="loading-title">正在翻开代码的年轮…</h2><p id="loading-stage">准备读取本地历史</p><div class="progress-track"><div id="loading-progress"></div></div><div class="loading-count"><span id="loading-count">0 条提交</span><span id="loading-percent">…</span></div><small>首次解析会建立本地缓存，再次回顾更快。</small></div></div>
+</main>
+
+<dialog id="open-dialog" class="modal open-modal" aria-label="打开本地仓库"><form id="open-form"><button type="button" class="modal-close icon-button" data-close="open-dialog" aria-label="关闭"><svg><use href="#i-close"/></svg></button><div class="modal-symbol"><svg><use href="#i-folder"/></svg></div><div class="eyebrow">OPEN A LOCAL REPOSITORY</div><h2>打开一段开发历程<span>.</span></h2><p>一个本地 Git 仓库，就是一本写过的日记。</p><label class="input-label" for="repo-path">仓库根目录、.git 文件夹或 .git 文件</label><div class="path-input"><input id="repo-path" placeholder="D:\projects\my-project\.git" autocomplete="off" spellcheck="false" required><button type="button" class="icon-button" id="browse-button" title="选择本地文件夹" aria-label="选择本地文件夹"><svg><use href="#i-folder"/></svg></button></div><p class="input-help">支持普通仓库、裸仓库和 worktree。所有读取均在本机完成。</p><div class="inline-error hidden" id="open-error" role="alert"></div><button type="submit" class="button primary open-submit" id="open-submit">开始回顾 <svg><use href="#i-arrow"/></svg></button><div class="recent-repositories hidden" id="recent-repositories"><span class="input-label">最近打开</span><div id="recent-repository-list"></div></div><div class="dialog-bottom"><span class="status-dot"></span> 仓库只读 · 不上传代码 <button type="button" id="demo-button">先逛逛演示仓库 ↗</button></div></form></dialog>
+
+<dialog id="method-dialog" class="modal method-modal" aria-label="统计口径与使用说明"><button class="modal-close icon-button" data-close="method-dialog" aria-label="关闭"><svg><use href="#i-close"/></svg></button><div class="eyebrow">BEHIND THE NUMBERS</div><h2>让数字说清楚。</h2><p>这是一份开发历程的切片。它记录发生过的变化。</p><div class="method-item"><b>分支与历史</b><p>默认包含所选分支可达的所有祖先提交。“所有分支”取本地分支、远程跟踪分支和 HEAD 的并集，每条提交只计一次，不包含仅由标签或 stash 引用的历史。不会切换分支或修改仓库。</p></div><div class="method-item"><b>新增、删除与累计净变更</b><p>基于 Git numstat 的文本行增删，包含文档、配置、依赖锁文件和仓库中提交过的生成文件。累计净变更 = 新增 − 删除，不等于当前代码总行数。二进制文件只记文件变更次数；重命名按删除旧文件和新增新文件处理。</p></div><div class="method-item"><b>合并提交与第一父链</b><p>默认保留合并提交的记录，但不累加其文件增删，避免把合入的历史重复计算。“只看第一父链”仅沿第一父提交回溯，并统计合并相对第一父提交的变化。所有分支模式使用完整历史。</p></div><div class="method-item"><b>时间与筛选</b><p>按 Git 作者日期统计，保留每条提交的原始时区。活动天数、连续天数基于这些日期；无法推算实际工作时长。近 30 / 90 天以今天为基准。时间、作者和搜索筛选同时生效，图表拖动或日历点击可以聚焦日期。</p></div><div class="method-item"><b>缓存与数据边界</b><p>缓存保存在应用的 .cache 目录，引用变化后会重新解析。浅克隆仅显示本地已有历史；未提交内容和已删除且不可达的提交不在统计中。点击刷新可强制重建当前视图缓存。</p></div><div class="method-item"><b>导出与快捷键</b><p>“导出回忆”可保存当前筛选的离线可视化 HTML 报告或完整提交 CSV。Ctrl / ⌘ K 搜索，Esc 关闭弹窗。曲线底部可播放、暂停、拖动并调节回放速度。</p></div></dialog>
+
+<dialog id="commit-dialog" class="modal commit-modal" aria-label="提交详情"><button class="modal-close icon-button" data-close="commit-dialog" aria-label="关闭提交详情"><svg><use href="#i-close"/></svg></button><div id="commit-detail"></div></dialog>
+<div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+<div id="heat-tooltip" class="heat-tooltip hidden" role="tooltip"></div>
+</body>
+</html>
