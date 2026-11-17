@@ -1,5 +1,7 @@
 # Git Atlas
 
+![MIT 许可证](https://img.shields.io/badge/license-MIT-blue)
+
 一个纯本地、只读的 Git 开发历程可视化应用。选择仓库根目录、`.git` 目录或 worktree 的 `.git` 文件，回顾代码的增删、时间的分布和每一次提交。
 
 ![Git Atlas 总览，使用演示数据](docs/preview.jpg)
@@ -83,3 +85,7 @@ static/app.js       Canvas 图表、回放、筛选、提交浏览与离线导�
 tests/test_app.py    真实 Git 集成测试
 start.cmd / start.sh 启动入口
 ```
+
+## 许可证
+
+本项目采用 [MIT 许可证](LICENSE)。
